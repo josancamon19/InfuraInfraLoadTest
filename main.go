@@ -16,7 +16,7 @@ func main() {
 
 	v1.Get("/", func(c *fiber.Ctx) error {
 
-		body, err := utils.GetAPIBodyRequest("eth_accounts", []string{})
+		body, err := utils.GetAPIBodyRequest("eth_blockNumber", []string{})
 		if err != nil {
 			c.Status(http.StatusBadRequest)
 			return c.JSON(err)
