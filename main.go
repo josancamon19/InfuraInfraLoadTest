@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"io/ioutil"
+	"infura-test/utils"
 	"log"
 	"net/http"
 	"os"
@@ -19,24 +16,19 @@ func main() {
 
 	v1.Get("/", func(c *fiber.Ctx) error {
 
-		body := map[string]interface{}{
-			"jsonrpc": "2.0", "method": "eth_blockNumber", "params": []string{}, "id": 1,
-		}
-		jsonData, err := json.Marshal(body)
-		requestUrl := os.Getenv("API_BASE_URL") + os.Getenv("INFURA_PROJECT_ID")
-		response, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(jsonData))
+		body, err := utils.GetAPIBodyRequest("eth_accounts", []string{})
 		if err != nil {
-			fmt.Println(err)
+			c.Status(http.StatusBadRequest)
+			return c.JSON(err)
 		}
 
-		defer response.Body.Close()
-
-		responseBody, err := ioutil.ReadAll(response.Body)
+		responseData, err := utils.InfuraAPIRequest(body)
 		if err != nil {
-			log.Fatal(err)
+			c.Status(http.StatusBadRequest)
+			return c.JSON(err)
 		}
 
-		return c.SendString(string(responseBody))
+		return c.JSON(responseData)
 	})
 
 	port := os.Getenv("PORT")
