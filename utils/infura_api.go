@@ -12,7 +12,7 @@ var ApiURL = os.Getenv("API_BASE_URL") + os.Getenv("INFURA_PROJECT_ID")
 
 func GetAPIBodyRequest(method string, params []string) (*bytes.Buffer, error) {
 	body := map[string]interface{}{
-		"jsonrpc": "2.0", "method": method, "params": params, "id": 2,
+		"jsonrpc": "2.0", "method": method, "params": params, "id": 1,
 	}
 	jsonData, err := json.Marshal(body)
 	if err != nil {
