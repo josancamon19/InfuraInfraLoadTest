@@ -7,7 +7,7 @@ WORKDIR /app
 
 RUN CGO_ENABLED=0 GOOS=linux go build infura-test
 
-FROM alpine:latest AS production
+FROM alpine:latest AS runner
 COPY --from=builder /app .
 
 ENV API_BASE_URL=https://mainnet.infura.io/v3/ \
