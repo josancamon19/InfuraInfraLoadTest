@@ -4,7 +4,7 @@
 
 1. Run ```go get```
 2. Enable ENV vars for ```API_BASE_URL```, ```INFURA_PROJECT_ID```, and ```PORT```.
-3. Run ```docker compose up``` for launching a redis db instance.
+3. Run ```docker run --name infura-test-redis -p 6379:6379 --rm redis``` for launching a redis db instance.
 3. Run the app ```go run main.go```
 
 **Using the Docker image:**
