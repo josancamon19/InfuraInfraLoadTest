@@ -26,3 +26,13 @@
       param ```?params=``` with the list of params separated by comma. e.g., http://127.0.0.1:8000/eth_getTransactionByBlockNumberAndIndex?params=0x5BAD55,0x1
 3. The Dockerfile is a pretty simple Multi stage Docker, compiling the Go code in container A, moving the generated
    executable to container B, running the container B.
+4. Added 2 caching layers, the 1st made with redis, and the 2nd as a middleware from the fiber framework. 
+   (```docker-compose.yaml``` with redis db added)
+5. For the load tests, the project uses [ddosify](https://github.com/ddosify/ddosify) a pretty simple yet powerful cli 
+   testing tool. DETAILS ABOUT THE LOAD TESTS RESULTS [HERE](./report/Report.md)
+   
+
+
+   
+
+

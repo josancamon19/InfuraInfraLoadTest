@@ -27,6 +27,12 @@ the connection timeout errors vary a lot, from a few <= 10 up to a few hundreds.
 
 
 ### Tests using a caching layer
+
+**Clarification:** *This caching layer is not 100% correct, it is a simplification. The right way would be using a
+subscription websocket connection to the infura API and update the data depending on those notifications.*
+
+---
+
 Previous test were considerably expensive to run because every API call required an Infura call, and the 100k per day limit was causing trouble.
 
 Thus, why not cache the Infura API responses and reuse those cached values? (A new ethereum block is generated every 12-14 seconds, also, some requests like 
