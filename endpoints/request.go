@@ -34,7 +34,6 @@ func InfuraHttpRequest(c *fiber.Ctx) error {
 		params = strings.Split(strParams, ",")
 	}
 
-	fmt.Printf("Calling method: \"%s\" with params: %v\n", method, params)
 	redisKey := utils.GetRedisKeyFromInputs(method, params)
 
 	// Try to find the cached value, as instead of making a request
@@ -42,8 +41,11 @@ func InfuraHttpRequest(c *fiber.Ctx) error {
 	if err == nil && data["id"] != "" {
 		fmt.Printf("Returning cached value for %s\n", redisKey)
 		return c.JSON(data)
+	} else {
+		fmt.Println(err)
 	}
 
+	fmt.Printf("Calling method: \"%s\" with params: %v\n", method, params)
 	// Build the body for the Infura API request
 	body, _ := utils.GetAPIBodyRequest(method, params)
 	responseData, err := utils.InfuraAPIRequest(body)
@@ -60,14 +62,15 @@ func InfuraHttpRequest(c *fiber.Ctx) error {
 		return c.JSON(message)
 	}
 
+	// @Deprecated with middleware caching layer
 	// For the method "eth_blockNumber" ~ new blocks are emitted every 12-14 seconds
-	ttl := time.Second * 10
+	// ttl := time.Second * 10
 	if method == "eth_getTransactionByBlockNumberAndIndex" {
 		// For "eth_getTransactionByBlockNumberAndIndex" ~ is getting a tx in an already appended block (immutable)
 		// thus it'll never change. 0 value in redis means key has no ttl
-		ttl = time.Second * 0
+		ttl := time.Second * 0
+		_ = utils.RedisSetKey(redisKey, responseData, ttl)
 	}
-	_ = utils.RedisSetKey(redisKey, responseData, ttl)
 	return c.JSON(responseData)
 }
 
