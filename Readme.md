@@ -9,8 +9,7 @@
 
 **Using the Docker image:**
 
-1. Build image with `docker build -t infura-infra-test-josancamon19 .`
-2. Run image with `docker run -p 8000:8000 infura-infra-test-josancamon19`
+1. Run ```docker compose up```
 
 ### Libraries/Tools/Procedure
 
